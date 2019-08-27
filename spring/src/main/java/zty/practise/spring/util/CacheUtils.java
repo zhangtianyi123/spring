@@ -21,7 +21,6 @@ public class CacheUtils {
 	@PostConstruct
 	public void init() {
 		cacheUtils = this;
-		cacheUtils.redisTemplate = this.redisTemplate;
 	}
 
 	/**

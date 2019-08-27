@@ -1,8 +1,19 @@
 server:
   port: 8011
+  cache: 
+    type: redis
+    redis:
+      time-to-live: 30000 #缓存超时时间ms
+      cache-null-values: false #是否缓存空值
   redis:
     host: 127.0.0.1
     port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+    timeout: 10000
     
 base:
   redis:

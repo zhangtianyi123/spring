@@ -28,4 +28,9 @@ public class SingleController {
 	public String getDescriptionWait() {
 		return globalizationByRedisService.getGlobalDescWithWait("key");
 	}
+	
+	@GetMapping("/desc/getsync")
+	public String getDescriptionSync() {
+		return globalizationByRedisService.getGlobalDescSync("sync");
+	}
 }
