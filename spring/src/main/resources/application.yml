@@ -1,2 +1,9 @@
 server:
   port: 8011
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    
+base:
+  redis:
+    expireTime: 3600
