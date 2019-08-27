@@ -31,7 +31,9 @@ public class SingleController {
 [代码链接][1]
 
 使用postman测试结果如下,证明了其单例和并发:
+
 ![image_1dj8c2doa40pks1fpblk15ff9.png-22.6kB][2]
+
 
 - 使用原型scope：
 ```
