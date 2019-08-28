@@ -12,6 +12,7 @@ import zty.practise.spring.test.transaction.DirtyReadService;
 import zty.practise.spring.test.transaction.FirstLostUpdateService;
 import zty.practise.spring.test.transaction.PhantomReadService;
 import zty.practise.spring.test.transaction.ReadCommitService;
+import zty.practise.spring.test.transaction.SecondLostUpdateService;
 
 @RestController
 @RequestMapping("/transaction")
@@ -28,6 +29,9 @@ public class TransactionController {
 	
 	@Autowired
 	private FirstLostUpdateService firstLostUpdateService;
+	
+	@Autowired
+	private SecondLostUpdateService secondLostUpdateService;
 	
 	@GetMapping("/get")
 	public String get() {
@@ -68,6 +72,18 @@ public class TransactionController {
 	@PostMapping("/first/rollback")
 	public String firstRollBack() {
 		firstLostUpdateService.getAndUpdateRollBack();
+		return "success";
+	}
+	
+	@PostMapping("/second/get/update")
+	public String secondGetAndUpdate() {
+		secondLostUpdateService.getAndUpdateCommit();
+		return "success";
+	}
+	
+	@PostMapping("/second/update")
+	public String secondUpdate() {
+		secondLostUpdateService.getAndUpdateCommit();
 		return "success";
 	}
 	
