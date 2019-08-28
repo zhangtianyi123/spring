@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zty.practise.spring.dto.GlobalCreateDTO;
 import zty.practise.spring.test.transaction.DirtyReadService;
+import zty.practise.spring.test.transaction.FirstLostUpdateService;
 import zty.practise.spring.test.transaction.PhantomReadService;
 import zty.practise.spring.test.transaction.ReadCommitService;
 
@@ -24,6 +25,9 @@ public class TransactionController {
 	
 	@Autowired
 	private PhantomReadService phantomReadService;
+	
+	@Autowired
+	private FirstLostUpdateService firstLostUpdateService;
 	
 	@GetMapping("/get")
 	public String get() {
@@ -52,6 +56,18 @@ public class TransactionController {
 	@PostMapping("/readtable")
 	public String readTable() {
 		phantomReadService.testRepeatReadTable();
+		return "success";
+	}
+	
+	@PostMapping("/first/commmit")
+	public String firstCommit() {
+		firstLostUpdateService.getAndUpdateCommit();
+		return "success";
+	}
+	
+	@PostMapping("/first/rollback")
+	public String firstRollBack() {
+		firstLostUpdateService.getAndUpdateRollBack();
 		return "success";
 	}
 	
