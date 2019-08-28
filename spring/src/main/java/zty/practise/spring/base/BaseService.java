@@ -9,6 +9,10 @@ public abstract class BaseService<T, PK extends Serializable> {
 	@Autowired
 	protected BaseMapper<T> baseMapper;
 
+	public int savenx(T entity) {
+		return baseMapper.insertIgnore(entity);
+	}
+	
 	public int save(T entity) {
 		return baseMapper.insertSelective(entity);
 	}

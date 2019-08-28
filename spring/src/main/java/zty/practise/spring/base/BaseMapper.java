@@ -7,6 +7,6 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * 通用Mapper接口,其他接口继承该接口即可
  * @param <T> 不能为空
  */
-public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T> {
+public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T>,ZTYInsertIgnoreMapper<T> {
 
 }
