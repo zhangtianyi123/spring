@@ -14,8 +14,8 @@ import tk.mybatis.mapper.annotation.Version;
 
 @Data
 @Entity
-@Table(name = "GLOBAL_INFO")
-public class GlobalInfo  implements Serializable {
+@Table(name = "GLOBAL_VERSION_INFO")
+public class GlobalVersionInfo  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,5 +39,11 @@ public class GlobalInfo  implements Serializable {
 	 */
 	@Column(name = "EN_MESSAGE")
 	private String englishMessage;
+	
+	/**
+	 * 乐观锁版本号
+	 */
+	@Version
+	private Integer version;
 	
 }
