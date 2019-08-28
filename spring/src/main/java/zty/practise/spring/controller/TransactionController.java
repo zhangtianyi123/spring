@@ -11,6 +11,7 @@ import zty.practise.spring.dto.GlobalCreateDTO;
 import zty.practise.spring.test.transaction.DeleteOptimisticLockService;
 import zty.practise.spring.test.transaction.DirtyReadService;
 import zty.practise.spring.test.transaction.FirstLostUpdateService;
+import zty.practise.spring.test.transaction.InsertIgnoreService;
 import zty.practise.spring.test.transaction.OptimisticLockService;
 import zty.practise.spring.test.transaction.PhantomReadService;
 import zty.practise.spring.test.transaction.ReadCommitService;
@@ -40,6 +41,9 @@ public class TransactionController {
 	
 	@Autowired
 	private DeleteOptimisticLockService deleteOptimisticLockService;
+	
+	@Autowired
+	private InsertIgnoreService insertIgnoreService;
 	
 	@GetMapping("/get")
 	public String get() {
@@ -116,6 +120,12 @@ public class TransactionController {
 	@PostMapping("/optimistic/delete")
 	public String optimisticDelete() {
 		deleteOptimisticLockService.getAndDeleteCommit();
+		return "success";
+	}
+	
+	@PostMapping("/insertnx")
+	public String insertnx() {
+		insertIgnoreService.InsertCommit();
 		return "success";
 	}
 	
