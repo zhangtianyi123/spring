@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zty.practise.spring.dto.GlobalCreateDTO;
 import zty.practise.spring.test.transaction.DirtyReadService;
+import zty.practise.spring.test.transaction.PhantomReadService;
+import zty.practise.spring.test.transaction.ReadCommitService;
 
 @RestController
 @RequestMapping("/transaction")
@@ -17,15 +19,40 @@ public class TransactionController {
 	@Autowired
 	private DirtyReadService dirtyReadService;
 	
+	@Autowired
+	private ReadCommitService readCommitService;
+	
+	@Autowired
+	private PhantomReadService phantomReadService;
+	
 	@GetMapping("/get")
 	public String get() {
 		dirtyReadService.testTransactionStarted();
 		return "success";
 	}
 	
-	@PostMapping("/uncommit")
+	@PostMapping("/update")
 	public String updateUnCommmit() {
 		dirtyReadService.testReadUnCommmit();
 		return "success";
 	}
+	
+	@PostMapping("/repeateread")
+	public String repeateRead() {
+		readCommitService.testRepeatRead();
+		return "success";
+	}
+	
+	@PostMapping("/insert")
+	public String insert() {
+		phantomReadService.testInsert();
+		return "success";
+	}
+	
+	@PostMapping("/readtable")
+	public String readTable() {
+		phantomReadService.testRepeatReadTable();
+		return "success";
+	}
+	
 }
