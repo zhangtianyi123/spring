@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import zty.practise.spring.dto.GlobalCreateDTO;
+import zty.practise.spring.test.transaction.DeleteOptimisticLockService;
 import zty.practise.spring.test.transaction.DirtyReadService;
 import zty.practise.spring.test.transaction.FirstLostUpdateService;
+import zty.practise.spring.test.transaction.OptimisticLockService;
 import zty.practise.spring.test.transaction.PhantomReadService;
 import zty.practise.spring.test.transaction.ReadCommitService;
 import zty.practise.spring.test.transaction.SecondLostUpdateService;
@@ -32,6 +34,12 @@ public class TransactionController {
 	
 	@Autowired
 	private SecondLostUpdateService secondLostUpdateService;
+	
+	@Autowired
+	private OptimisticLockService optimisticLockService;
+	
+	@Autowired
+	private DeleteOptimisticLockService deleteOptimisticLockService;
 	
 	@GetMapping("/get")
 	public String get() {
@@ -84,6 +92,30 @@ public class TransactionController {
 	@PostMapping("/second/update")
 	public String secondUpdate() {
 		secondLostUpdateService.getAndUpdateCommit();
+		return "success";
+	}
+	
+	@PostMapping("/optimistic/get/update")
+	public String optimisticGetAndUpdate() {
+		optimisticLockService.getAndUpdateCommit();
+		return "success";
+	}
+	
+	@PostMapping("/optimistic/update")
+	public String optimisticUpdate() {
+		optimisticLockService.getAndUpdateCommit();
+		return "success";
+	}
+	
+	@PostMapping("/optimistic/get/delete")
+	public String optimisticGetAndDelete() {
+		deleteOptimisticLockService.getAndDeleteCommit();
+		return "success";
+	}
+	
+	@PostMapping("/optimistic/delete")
+	public String optimisticDelete() {
+		deleteOptimisticLockService.getAndDeleteCommit();
 		return "success";
 	}
 	
