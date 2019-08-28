@@ -2,13 +2,17 @@ package zty.practise.spring.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import lombok.Data;
 
 @Data
-public class GlobalCreateDTO implements Serializable {
-	
-	private static final long serialVersionUID = 7136372852675856840L;
+public class GlobalUpdateDTO implements Serializable {
+
+	private static final long serialVersionUID = 3130745294485497245L;
+
+	/**
+	 * 主键id
+	 */
+	private Long id;
 	
 	/**
 	 * 查找键
@@ -24,5 +28,4 @@ public class GlobalCreateDTO implements Serializable {
 	 * 英文
 	 */
 	private String englishMessage;
-	
 }

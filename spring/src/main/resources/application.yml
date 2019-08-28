@@ -31,3 +31,7 @@ server:
 base:
   redis:
     expireTime: 3600
+    
+logging:
+  level:
+    root: debug
