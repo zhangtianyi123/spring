@@ -269,6 +269,87 @@ final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
 事务1：删除get存在的数据（竞态条件）：删除操作返回值0
 
+# spring-bean加载
+
+- beanFactory加载  
+bean加载首先是对beanfactory加载，beanFactory
+BeanFactoryPostProcessor 就提供了一种扩展方式，可以在bean加载之前执行某些逻辑（但是需要与bean状态无关，因为它不会加载bean）
+
+```
+@Component
+public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+    
+	@Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        System.out.println("可以执行bean的方法，但不会加载bean");
+    }
+}
+```
+-  **bean装载**
+1. 实例化; 
+2. 设置属性值; 
+3. 如果实现了BeanNameAware接口,调用setBeanName设置Bean的ID或者Name; 
+4. 如果实现BeanFactoryAware接口,调用setBeanFactory 设置BeanFactory; 
+5. 如果实现ApplicationContextAware,调用setApplicationContext设置ApplicationContext 
+6. 调用BeanPostProcessor的预先初始化方法; 
+7. 调用InitializingBean的afterPropertiesSet()方法; 
+8. 调用定制init-method方法； 
+9. 调用BeanPostProcessor的后初始化方法;
+
+被**@PostConstruct修饰的方法会在服务器加载Servle的时候运行**，并且只会被服务器执行一次。PostConstruct在构造函数之后执行,init()方法之前执行。
+
+该方法在初始化的依赖注入操作之后被执行。这个方法必须在class被放到service之后被执行，这个注解所在的类必须支持依赖注入。
+PostConstruct修饰的方法，要注意的是这个方法在对象的初始化和依赖都完成之后才会执行
+
+**测试**得出：
+构造方法 > @Autowired > @PostConstruct
+
+
+### postconstruct顺序导致的错误
+@postconstruct会在加载bean的时候执行，但是bean加载之间有先后关系。如果beanA的@postconstruct内调用beanB的实例，
+如果beanB的实例也是在@PostConstruct内初始化的，那么在beanA先于beanB加载的时候，可能发生空指针异常
+
+![image_1djt21ov3leo8vp1q891q1gqpa9.png-87.9kB][33]
+
+### 使用autowired解决
+
+间接通过引用指定了bean加载的顺序
+```
+@Service
+public class PostConstructWithAutowired {
+
+	@Autowired
+	private CacheUtils cacheUtils;
+	
+	/**
+	 * 因为有@Autowired，所以此方法不会导致启动报错
+	 */
+	@PostConstruct
+	public void initialize() {
+		System.out.println("PostConstructError's init method");
+		CacheUtils.set("初始化数据key", "初始化数据value");
+	}
+}
+```
+
+### 使用DependsOn解决
+
+指定了bean加载的相对顺序
+```
+@Service
+@DependsOn("cacheUtils")
+public class PostConstructWithDependsOn {
+
+	/**
+	 * 因为有@DependsOn，所以此方法不会导致启动报错
+	 */
+	@PostConstruct
+	public void initialize() {
+		System.out.println("PostConstructError's init method");
+		CacheUtils.set("初始化数据key", "初始化数据value");
+	}
+}
+```
 
   [1]: https://github.com/zhangtianyi123/spring/blob/master/spring/src/main/java/zty/practise/spring/SpringApp.java
   [2]: http://static.zybuluo.com/zhangtianyi/yi0etpkmh3mtfiqpembzyq6z/image_1dj8c2doa40pks1fpblk15ff9.png
@@ -302,3 +383,4 @@ final ReadWriteLock rwLock = new ReentrantReadWriteLock();
   [30]: http://static.zybuluo.com/zhangtianyi/rzdysgdabkmad5oont6pomx1/image_1djbk1moe1q71g14qboljc1hrcep.png
   [31]: http://static.zybuluo.com/zhangtianyi/l47zlvfez14bnde2kyj4wzex/image_1djbk31si1nsis28b3iov0djqf6.png
   [32]: http://static.zybuluo.com/zhangtianyi/s4oju3o4qjt3bcne4d1mgdwb/image_1djbhcnhc9b41b9m10fah5119nb9r.png
+  [33]: http://static.zybuluo.com/zhangtianyi/2w8qs61xlkjptmd8ugc69gcc/image_1djt21ov3leo8vp1q891q1gqpa9.png
