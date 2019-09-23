@@ -12,11 +12,7 @@ public class HelloService {
 	private HelloMapper helloMapper;
 	
 	public LotInfo getLotInfo() throws JsonProcessingException {
-//		ObjectMapper mapper = new ObjectMapper();
 		LotInfo lot = helloMapper.getLotFromDB();
 		return lot;
-//		String jsonString = mapper.writeValueAsString(lot);
-//		
-//		return jsonString;
 	}
 }
