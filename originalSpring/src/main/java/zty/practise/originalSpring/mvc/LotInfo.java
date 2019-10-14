@@ -2,7 +2,7 @@ package zty.practise.originalSpring.mvc;
 
 
 import java.io.Serializable; 
-public class LotInfo implements Serializable {
+public class LotInfo implements Serializable {  //model  对象封装数据和行为 
 
 	private static final long serialVersionUID = 6753157450715512243L;
 
@@ -11,7 +11,7 @@ public class LotInfo implements Serializable {
 	private String lotPosition;
 	
 	private String description; 
-
+	
 	public String getLotName() {
 		return lotName;
 	}
